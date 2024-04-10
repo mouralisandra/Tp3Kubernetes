@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: tp3
+spec:
+ replicas: 4
+ selector:
+   matchLabels:
+     app: tp3
+ template:
+   metadata:
+     labels:
+       app: tp3
+   spec:
+     containers:
+       - name: front
+         image: nadamankai/learn-room:frontend
+         ports:
+           - containerPort: 80
+         resources:
+           limits:
+             cpu: "0.5"
+             memory: "512Mi"
+       - name: back
+         image: sandramourali/learn-room:backend
+         ports:
+           - containerPort: 3000
+         env:
+           - name: DB_HOST
+             value: "aws-0-eu-central-1.pooler.supabase.com"
+           - name: DB_PORT
+             value: "5432"
+           - name: DB_USER
+             value: "postgres.svrgvowmtumytoypubvn"
+           - name: DB_PASSWORD
+             value: "lerarn-room1"
+           - name: DB_NAME
+             value: "postgres"
+           - name: salt
+             value: "$2b$10$4SpY2UhZFZFAgqX/GRlWze"
+           - name: JWT_SECRET_KEY
+             value: "4ds6b6rgfd465h4ge6dw54hfv6br4dv6vkjdvskwc"
+         resources:
+           limits:
+             cpu: "1"
+             memory: "1Gi"
